@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition
+    template="/templates/template.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+  <!-- Metadata para editar -->
+  <f:metadata>
+    <f:viewParam name="id"
+                 value="#{clients.cliente.id_cliente}"
+                 converter="jakarta.faces.Long" />
+    <f:event type="preRenderView"
+             listener="#{clients.loadCliente}" />
+  </f:metadata>
+
+  <ui:define name="titulo">📝 Registro / Edición de Cliente</ui:define>
+  <ui:define name="contenido">
+    <h:form styleClass="form-card" prependId="false">
+      <h:messages globalOnly="true" styleClass="alert alert-error"/>
+        <!-- Cedula -->
+      <div class="form-group">
+        <h:outputLabel for="cedula" value="🆔 Cédula:" styleClass="form-label"/>
+        <h:inputText id="cedula"
+                    value="#{clients.cliente.cedula}"
+                    required="true"
+                    requiredMessage="La cédula es obligatoria"
+                    validatorMessage="Formato de cédula inválido"
+                    styleClass="form-control"/>
+        <h:message for="cedula" styleClass="error-message"/>
+        </div>
+
+      <!-- Nombre -->
+      <div class="form-group">
+        <h:outputLabel for="nombre" value="👤 Nombre:" styleClass="form-label"/>
+        <h:inputText id="nombre"
+                     value="#{clients.cliente.nombre}"
+                     required="true"
+                     requiredMessage="El nombre es obligatorio"
+                     styleClass="form-control"/>
+        <h:message for="nombre" styleClass="error-message"/>
+      </div>
+
+      <!-- Apellido -->
+      <div class="form-group">
+        <h:outputLabel for="apellido" value="👥 Apellido:" styleClass="form-label"/>
+        <h:inputText id="apellido"
+                     value="#{clients.cliente.apellido}"
+                     required="true"
+                     requiredMessage="El apellido es obligatorio"
+                     styleClass="form-control"/>
+        <h:message for="apellido" styleClass="error-message"/>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="form-group">
+        <h:outputLabel for="telefono" value="📞 Teléfono:" styleClass="form-label"/>
+        <h:inputText id="telefono"
+                     value="#{clients.cliente.telefono}"
+                     styleClass="form-control"/>
+        <h:message for="telefono" styleClass="error-message"/>
+      </div>
+
+      <!-- Dirección -->
+      <div class="form-group">
+        <h:outputLabel for="direccion" value="🏠 Dirección:" styleClass="form-label"/>
+        <h:inputText id="direccion"
+                     value="#{clients.cliente.direccion}"
+                     styleClass="form-control"/>
+        <h:message for="direccion" styleClass="error-message"/>
+      </div>
+
+      <!-- Correo -->
+      <div class="form-group">
+        <h:outputLabel for="email" value="📧 Correo Electrónico:" styleClass="form-label"/>
+        <h:inputText id="email"
+                     value="#{clients.cliente.email}"
+                     required="true"
+                     requiredMessage="El email es obligatorio"
+                     styleClass="form-control"/>
+        <h:message for="email" styleClass="error-message"/>
+      </div>
+
+      <!-- Botones -->
+      <div class="form-actions">
+        <h:commandButton value="➕ Agregar Cliente"
+                         action="#{clients.agregarCliente}"
+                         rendered="#{clients.cliente.id_cliente == null}"
+                         styleClass="btn btn-primary"/>
+        <h:commandButton value="✏️ Modificar Cliente"
+                         action="#{clients.modificarCliente}"
+                         rendered="#{clients.cliente.id_cliente != null}"
+                         styleClass="btn btn-primary"/>
+        <h:commandButton value="❌ Cancelar"
+                         action="/views/clients/list.xhtml?faces-redirect=true"
+                         immediate="true"
+                         styleClass="btn btn-secondary"/>
+      </div>
+    </h:form>
+  </ui:define>
+</ui:composition>

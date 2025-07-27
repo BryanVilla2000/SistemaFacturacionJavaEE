@@ -1,0 +1,30 @@
+<server description="FitSystem Server">
+
+    <featureManager>
+        <!-- Jakarta EE 10 (incluye EclipseLink para JPA) -->
+        <feature>jakartaee-10.0</feature>
+    </featureManager>
+
+    <basicRegistry id="defaultBasicRegistry" realm="BasicRealm">
+        <user name="admin" password="adminpass" />
+    </basicRegistry>
+
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" httpsPort="9443" />
+
+    <library id="MySQLLib">
+        <fileset dir="/config/" includes="mysql-connector-j*.jar" />
+    </library>
+
+    <dataSource id="MySQLDataSource" jndiName="jdbc/fitsystemDS">
+        <jdbcDriver libraryRef="MySQLLib" />
+        <properties
+            databaseName="${env.DB_NAME}"
+            serverName="${env.DB_HOST}"
+            portNumber="${env.DB_PORT}"
+            user="${env.DB_USER}"
+            password="${env.DB_PASSWORD}" />
+    </dataSource>
+
+    <webApplication location="proyect-FitSystem.war" contextRoot="/" />
+
+</server>

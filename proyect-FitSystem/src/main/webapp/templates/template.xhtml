@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition  
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+  <h:head>
+    <meta charset="UTF-8"/>
+    <title><ui:insert name="titulo"/></title>
+    <h:outputStylesheet library="css" name="styles.css"/>
+  </h:head>
+
+  <h:body>
+    <!-- Header común con logout -->
+    <ui:include src="/templates/header.xhtml"/>
+
+    <div class="main-layout">
+      <!-- Menú lateral -->
+      <ui:include src="/templates/sidebar.xhtml"/>
+
+      <!-- Zona principal -->
+      <main class="main-content">
+        <ui:insert name="contenido"/>
+      </main>
+    </div>
+
+    <!-- Footer común -->
+    <ui:include src="/templates/footer.xhtml"/>
+  </h:body>
+</ui:composition>

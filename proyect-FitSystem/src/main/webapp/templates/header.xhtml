@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+  <header class="header">
+    <div class="logo">🏋️‍♂️ FitSystem</div>
+    <div class="user-info">
+      <h:outputText
+        value="👤 #{authBean.usuarioAutenticado != null 
+                ? authBean.usuarioAutenticado.nombreCompleto 
+                : 'Invitado'}"/>
+      <h:form prependId="false" style="display:inline">
+        <h:commandButton value="Cerrar sesión"
+                         action="#{authBean.logout}"
+                         styleClass="logout-btn"/>
+      </h:form>
+    </div>
+  </header>
+
+</ui:composition>
