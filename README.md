@@ -70,9 +70,10 @@ admin	admin12
 
 ## 🗂️ Estructura del proyecto
 
-`/src/main/java/com/fitsystem/bean`        # Managed Beans (controladores)
-`/src/main/java/com/fitsystem/model  `     # Entidades JPA (modelo de datos)
-`/src/main/resources/META-INF/persistence.xml ` # Configuración JPA
-`/src/main/liberty/config/server.xml  `    # Configuración Open Liberty
-`/src/main/webapp/views       `             # Vistas JSF (.xhtml) organizadas por módulos
-`docker-compose-dev-mysql.yml  `            # Orquestación de servicios para desarrollo
+- `/src/main/java/com/fitsystem/bean`: Managed Beans (controladores)  
+- `/src/main/java/com/fitsystem/model`: Entidades JPA (modelo de datos)  
+- `/src/main/resources/META-INF/persistence.xml`: Configuración JPA  
+- `/src/main/liberty/config/server.xml`: Configuración Open Liberty  
+- `/src/main/webapp/views`: Vistas JSF (.xhtml) organizadas por módulo  
+- `docker-compose-dev-mysql.yml`: Orquestación de servicios para desarrollo
+
