@@ -31,72 +31,48 @@
 ```bash
 git clone https://github.com/BryanVilla2000/proyect-FitSystem.git
 cd proyect-FitSystem
-
-Construir el proyecto con Maven Wrapper:
-
-bash
-Copiar
-Editar
+```
+2. Construir el proyecto con Maven Wrapper:
+```bash
 ./mvnw clean package
-Levantar los servicios con Docker Compose (abre MySQL, Adminer y la app):
-
-bash
-Copiar
-Editar
+```
+3. Levantar los servicios con Docker Compose (abre MySQL, Adminer y la app):
+```bash
 docker compose -f docker-compose-dev-mysql.yml up --build -d
-Acceder a la aplicación en el navegador:
-
-bash
-Copiar
-Editar
+```
+4. Acceder a la aplicación en el navegador:
+```bash
 http://localhost:9080/proyect-FitSystem/login.xhtml
-Acceder a Adminer para gestionar la base de datos:
-
-arduino
-Copiar
-Editar
+```
+5. Acceder a Adminer para gestionar la base de datos:
+```bash
 http://localhost:8080
-Datos para conexión a la base:
-
+```
+## Datos para conexión a la base:
+```bash
 Sistema: MySQL
-
 Servidor: mysql
-
 Usuario: root
-
 Contraseña: root
-
 Base de datos: fitsystemdb
-
-🔐 Credenciales de acceso de prueba
+```
+## 🔐 Credenciales de acceso de prueba
 Usuario	Contraseña
 admin	admin12
 
-📋 Funcionalidades principales
-Autenticación y autorización con roles
+## 📋 Funcionalidades principales
+- Autenticación y autorización con roles
+- Gestión CRUD de usuarios, clientes y productos
+- Registro y edición de facturas con detalle de productos
+- Cálculo automático de subtotal, IVA (12%) y total
+- Interfaz moderna y responsiva con JSF y Facelets
+- Protección de vistas mediante filtros de seguridad
 
-Gestión CRUD de usuarios, clientes y productos
+## 🗂️ Estructura del proyecto
 
-Registro y edición de facturas con detalle de productos
-
-Cálculo automático de subtotal, IVA (12%) y total
-
-Interfaz moderna y responsiva con JSF y Facelets
-
-Protección de vistas mediante filtros de seguridad
-
-🗂️ Estructura del proyecto
-bash
-Copiar
-Editar
-/src/main/java/com/fitsystem/bean        # Managed Beans (controladores)
-/src/main/java/com/fitsystem/model       # Entidades JPA (modelo de datos)
-/src/main/resources/META-INF/persistence.xml  # Configuración JPA
-/src/main/liberty/config/server.xml      # Configuración Open Liberty
-/src/main/webapp/views                    # Vistas JSF (.xhtml) organizadas por módulos
-docker-compose-dev-mysql.yml              # Orquestación de servicios para desarrollo
-📷 Captura de pantalla
-<img src="docs/dashboard.png" alt="Captura de pantalla del dashboard de FitSystem" width="700"/>
-🙋‍♂️ Autor
-Bryan Villa
-
+`/src/main/java/com/fitsystem/bean`        # Managed Beans (controladores)
+`/src/main/java/com/fitsystem/model  `     # Entidades JPA (modelo de datos)
+`/src/main/resources/META-INF/persistence.xml ` # Configuración JPA
+`/src/main/liberty/config/server.xml  `    # Configuración Open Liberty
+`/src/main/webapp/views       `             # Vistas JSF (.xhtml) organizadas por módulos
+`docker-compose-dev-mysql.yml  `            # Orquestación de servicios para desarrollo
