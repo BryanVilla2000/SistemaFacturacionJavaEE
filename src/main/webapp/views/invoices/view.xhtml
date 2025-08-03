@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition
+    template="/templates/template.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+  <!-- 1) Metadata para capturar el parámetro id y disparar loadFactura -->
+  <f:metadata>
+    <f:viewParam name="id" value="#{invoices.facturaId}" />
+    <f:event type="preRenderView" listener="#{invoices.loadFactura}" />
+  </f:metadata>
+
+  <ui:define name="titulo">Factura ##{invoices.factura.id_factura}</ui:define>
+  <ui:define name="contenido">
+
+    <div class="form-card" style="max-width:800px; margin:0 auto;">
+      <!-- Encabezado de la factura -->
+      <h2>📄 Factura <small class="text-muted">##{invoices.factura.id_factura}</small></h2>
+      <p>
+        <strong>Fecha:</strong>
+        #{invoices.factura.fechaFormateada}
+      </p>
+      <p>
+        <strong>Cliente:</strong>
+        #{invoices.factura.cliente.nombreCompleto}
+      </p>
+
+      <!-- Detalles de línea -->
+      <h3>Detalles</h3>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Descripción</th>
+              <th style="text-align:right">Cant.</th>
+              <th style="text-align:right">Precio Unitario</th>
+              <th style="text-align:right">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ui:repeat var="d" value="#{invoices.factura.detalles}">
+              <tr>
+                <td>#{d.producto.codigo}</td>
+                <td>#{d.producto.nombre}</td>
+                <td style="text-align:right">#{d.cantidad}</td>
+                <td style="text-align:right">
+                  <h:outputText value="#{d.precioUnitario}">
+                    <f:convertNumber minFractionDigits="2"/>
+                  </h:outputText>
+                </td>
+                <td style="text-align:right">
+                  <h:outputText value="#{d.subtotal}">
+                    <f:convertNumber minFractionDigits="2"/>
+                  </h:outputText>
+                </td>
+              </tr>
+            </ui:repeat>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Totales -->
+      <div style="margin-top:1.5rem; text-align:right; max-width:400px; margin-left:auto;">
+        <table style="width:100%; border:none;">
+          <tr>
+            <td style="text-align:left"><strong>Subtotal:</strong></td>
+            <td style="text-align:right">
+              <h:outputText value="#{invoices.subtotal}">
+                <f:convertNumber minFractionDigits="2"/>
+              </h:outputText>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align:left"><strong>IVA (12%):</strong></td>
+            <td style="text-align:right">
+              <h:outputText value="#{invoices.iva}">
+                <f:convertNumber minFractionDigits="2"/>
+              </h:outputText>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align:left; font-size:1.1em;"><strong>Total (inc. IVA):</strong></td>
+            <td style="text-align:right; font-size:1.1em;">
+              <h:outputText value="#{invoices.totalConIva}">
+                <f:convertNumber minFractionDigits="2"/>
+              </h:outputText>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Botón de volver -->
+      <div style="text-align:center; margin-top:2rem;">
+        <h:link value="← Volver a Facturas"
+                outcome="/views/invoices/list.xhtml"
+                styleClass="btn btn-secondary"/>
+      </div>
+    </div>
+
+  </ui:define>
+</ui:composition>

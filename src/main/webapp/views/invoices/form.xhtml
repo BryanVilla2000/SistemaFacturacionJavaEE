@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition
+    template="/templates/template.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+  <ui:define name="titulo">📋 Nueva Venta</ui:define>
+  <ui:define name="contenido">
+    <h:form prependId="false">
+      <h:messages globalOnly="true" styleClass="error-message"/>
+
+      <!-- 1. Buscar cliente por cédula -->
+      <div class="form-card card-shadow">
+        <h3 class="section-title">👤 Datos del Cliente</h3>
+        
+        <div class="client-search-section">
+          <h:panelGrid columns="4" columnClasses="label,value,button,empty" styleClass="search-grid">
+            <h:outputLabel for="cedula" value="Cédula:" styleClass="bold-label"/>
+            <h:inputText id="cedula"
+                         value="#{invoiceEditor.cedulaInput}"
+                         required="true"
+                         requiredMessage="La cédula es obligatoria"
+                         styleClass="form-input"/>
+            <h:commandButton value="🔍 Buscar Cliente"
+                             action="#{invoiceEditor.buscarCliente}"
+                             styleClass="btn btn-primary"/>
+            <h:panelGroup/> <!-- Espacio vacío -->
+          </h:panelGrid>
+        </div>
+
+        <div class="client-info-panel" rendered="#{not empty invoiceEditor.factura.cliente}">
+          <h:panelGrid columns="2" columnClasses="label,value" styleClass="client-info-grid">
+            <h:outputText value="Nombre Completo:" styleClass="info-label"/>
+            <h:outputText value="#{invoiceEditor.factura.cliente.nombreCompleto}" styleClass="info-value"/>
+            <h:outputText value="Teléfono:" styleClass="info-label"/>
+            <h:outputText value="#{invoiceEditor.factura.cliente.telefono}" styleClass="info-value"/>
+            <h:outputText value="Dirección:" styleClass="info-label"/>
+            <h:outputText value="#{invoiceEditor.factura.cliente.direccion}" styleClass="info-value"/>
+          </h:panelGrid>
+        </div>
+      </div>
+
+      <!-- 2. Agregar ítem -->
+      <div class="form-card card-shadow">
+        <h3 class="section-title">🛒 Agregar Productos</h3>
+        <h:panelGrid columns="3" columnClasses="label,value,button" cellpadding="5" styleClass="product-grid">
+          <h:outputLabel for="codigo" value="Código:" styleClass="bold-label"/>
+          <h:inputText id="codigo"
+                       value="#{invoiceEditor.codigoInput}"
+                       required="true"
+                       requiredMessage="El código del producto es obligatorio"
+                       styleClass="form-input"/>
+          <h:commandButton value="➕ Agregar Producto"
+                           action="#{invoiceEditor.agregarDetalle}"
+                           styleClass="btn btn-primary"/>
+          <h:message for="codigo" styleClass="error-message"/>
+
+          <h:outputLabel for="cantidad" value="Cantidad:" styleClass="bold-label"/>
+          <h:inputText id="cantidad"
+                       value="#{invoiceEditor.cantidadInput}"
+                       required="true"
+                       requiredMessage="La cantidad es obligatoria"
+                       styleClass="form-input">
+            <f:convertNumber integerOnly="true"/>
+          </h:inputText>
+          <h:message for="cantidad" styleClass="error-message"/>
+        </h:panelGrid>
+      </div>
+
+      <!-- 3. Listado de detalles -->
+      <div class="form-card card-shadow">
+        <h3 class="section-title">📋 Detalles de la Factura</h3>
+        <h:dataTable value="#{invoiceEditor.detalles}"
+                     var="d"
+                     styleClass="data-table responsive-table">
+          <h:column>
+            <f:facet name="header">Código</f:facet>
+            <h:outputText value="#{d.producto.codigo}" styleClass="table-cell"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Descripción</f:facet>
+            <h:outputText value="#{d.producto.nombre}" styleClass="table-cell"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Cant.</f:facet>
+            <h:outputText value="#{d.cantidad}" styleClass="table-cell"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Precio Unitario</f:facet>
+            <h:outputText value="#{d.precioUnitario}" styleClass="table-cell price">
+              <f:convertNumber minFractionDigits="2"/>
+            </h:outputText>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Subtotal</f:facet>
+            <h:outputText value="#{d.subtotal}" styleClass="table-cell price">
+              <f:convertNumber minFractionDigits="2"/>
+            </h:outputText>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Acciones</f:facet>
+            <h:commandLink value="🗑️ Eliminar"
+                           action="#{invoiceEditor.eliminarDetalle(d)}"
+                           styleClass="btn btn-delete"
+                           onclick="return confirm('¿Está seguro de eliminar este ítem?');"/>
+          </h:column>
+        </h:dataTable>
+
+        <!-- 4. Totales -->
+        <div class="totals-section">
+          <h:panelGrid columns="2" columnClasses="total-label,total-value">
+            <h:outputText value="Subtotal:" styleClass="total-label"/>
+            <h:outputText value="#{invoiceEditor.subtotal}" styleClass="total-value">
+              <f:convertNumber minFractionDigits="2"/>
+            </h:outputText>
+
+            <h:outputText value="IVA (12%):" styleClass="total-label"/>
+            <h:outputText value="#{invoiceEditor.iva}" styleClass="total-value">
+              <f:convertNumber minFractionDigits="2"/>
+            </h:outputText>
+
+            <h:outputText value="Total:" styleClass="total-label grand-total"/>
+            <h:outputText value="#{invoiceEditor.totalConIva}" styleClass="total-value grand-total">
+              <f:convertNumber minFractionDigits="2"/>
+            </h:outputText>
+          </h:panelGrid>
+        </div>
+      </div>
+
+      <!-- 5. Guardar factura -->
+      <div class="actions-section">
+        <h:commandButton value="💾 Guardar Factura"
+                         action="#{invoiceEditor.guardarFactura}"
+                         styleClass="btn btn-save"/>
+         <h:button value="🚫 Cancelar"
+                  outcome="/views/invoices/list.xhtml"
+                  styleClass="btn btn-save"/>
+      </div>
+    </h:form>
+  </ui:define>
+</ui:composition>

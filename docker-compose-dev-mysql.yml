@@ -1,0 +1,59 @@
+services:
+  # =======================================
+  # Servicio MySQL
+  # =======================================
+  mysql-db:
+    image: mysql:8.0.36
+    container_name: fitsystem-mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123       # Contraseña del root
+      MYSQL_DATABASE: fitsystemdb               # Nombre de la base de datos
+      MYSQL_USER: fitsystemuser                 # Usuario personalizado
+      MYSQL_PASSWORD: fitsystempass             # Contraseña del usuario
+    ports:
+      - "3306:3306"                              # Puerto para acceder desde fuera
+    volumes:
+      - mysql-data:/var/lib/mysql               # Persistencia de datos
+      - ./init/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql  # Script de inicialización
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # =======================================
+  # Servicio Adminer
+  # =======================================
+  adminer:
+    image: adminer
+    container_name: fitsystem-adminer
+    depends_on:
+      - mysql-db
+    ports:
+      - "8081:8080"  # Adminer accesible en http://localhost:8081
+
+  # =======================================
+  # Servicio de la aplicación FitSystem
+  # =======================================
+  fitsystem-app:
+    build:
+      context: .                      # Ruta al Dockerfile
+      dockerfile: Dockerfile
+    container_name: fitsystem-app
+    depends_on:
+      - mysql-db
+    ports:
+      - "9080:9080"                   # HTTP
+      - "9443:9443"                   # HTTPS
+    environment:
+      DB_NAME: fitsystemdb
+      DB_USER: fitsystemuser
+      DB_PASSWORD: fitsystempass
+      DB_HOST: mysql-db
+      DB_PORT: 3306
+
+# =======================================
+# Volúmenes persistentes
+# =======================================
+volumes:
+  mysql-data:

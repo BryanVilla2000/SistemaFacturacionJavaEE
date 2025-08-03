@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition
+        template="/templates/template.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <!-- Título que aparece en la pestaña del navegador -->
+    <ui:define name="titulo">FitSystem</ui:define>
+
+    <!-- Contenido principal del dashboard -->
+    <ui:define name="contenido">
+        <h1>🏠 Panel de Control</h1>
+        <p>Bienvenido, a FitSystem.</p>
+
+        <div class="dashboard-cards">
+            <h:link outcome="/views/users/list.xhtml" styleClass="dashboard-card">
+                👤 <span>Usuarios</span>
+            </h:link>
+
+            <h:link outcome="/views/clients/list.xhtml" styleClass="dashboard-card">
+                🧾 <span>Clientes</span>
+            </h:link>
+
+            <h:link outcome="/views/products/list.xhtml" styleClass="dashboard-card">
+                📦 <span>Productos</span>
+            </h:link>
+
+            <h:link outcome="/views/invoices/list.xhtml" styleClass="dashboard-card">
+                💳 <span>Facturación</span>
+            </h:link>
+        </div>
+    </ui:define>
+
+</ui:composition>
